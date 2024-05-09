@@ -1,0 +1,13 @@
+names:
+- acordado
+- sonolento
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: drowsiness-dotzm
+  url: https://universe.roboflow.com/fatec-ofqxt/drowsiness-dotzm/dataset/1
+  version: 1
+  workspace: fatec-ofqxt
+test: ../test/images
+train: Drowsiness-1/train/images
+val: Drowsiness-1/valid/images
