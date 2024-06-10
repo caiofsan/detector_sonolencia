@@ -2,25 +2,29 @@ import cv2
 import torch
 import numpy as np
 
-# webcam
-cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480)
+# carregando o modelo YOLO personalizado
+model = torch.hub.load('ultralytics/yolov5', 
+                       'custom', 
+                       path='drowsiness_model/exp2/best.pt')
 
-# modelo personalizado
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='drowsiness_model/exp2/last.pt', force_reload=True)
-# classes
-classes = ["acordado", "sonolento"]
+# propriedades da janela da webcam
+webcam = cv2.VideoCapture(0)
+webcam.set(3, 640)
+webcam.set(4, 480)
 
+# Iniciando webcam
+if not webcam.isOpened():
+    print("Não foi possível abrir a webcam.")
+    exit()
 while True:
-    ret, img = cap.read()
-    img = [img]
-    results = model(img)
+    ret, img = webcam.read() # fazendo a leitura de um frame
+    detection = model(img) # o modelo processa o frame e guarda o resultado
 
-    cv2.imshow('Teste de captura', np.squeeze(results.render()))
+    cv2.imshow('Teste de captura', 
+               np.squeeze(detection.render())) # o resultado é renderizado
 
-    if cv2.waitKey(1) == ord('q'):
+    if cv2.waitKey(1) == ord('q'): # Aperte Q para encerrar a aplicação
         break
 
-cap.release()
+webcam.release()
 cv2.destroyAllWindows()
